@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Heart Words</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    background:#000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+/* الكونتينر */
+#ui{
+    position:relative;
+    width: 500px;
+    height: 500px;
+}
+
+/* الكلمة */
+.Love_word{
+    position:absolute;
+    left:50%;
+    top:50%;
+    color:#ea80b0;
+    font-size:1.2rem;
+    letter-spacing:2px;
+    white-space:nowrap;
+    opacity: 0.8;    transform: translate(-50%, -50%);
+}
+</style>
+</head>
+
+<body>
+
+<div id="ui"></div>
+
+<script>
+const ui = document.getElementById("ui");
+const words = [];
+const count = 120; // عدد الكلمات
+
+// دالة القلب
+function heart(t){
+    return {
+        x: 16 * Math.pow(Math.sin(t), 3),
+        y: 13 * Math.cos(t)
+           - 5 * Math.cos(2*t)
+           - 2 * Math.cos(3*t)
+           - Math.cos(4*t)
+    };
+}
+
+// إنشاء الكلمات
+for(let i=0;i<count;i++){
+    let span = document.createElement("span");
+    span.className = "Love_word";
+    span.innerText = "I love You";
+
+    ui.appendChild(span);
+
+    words.push({
+        el: span,
+        t: (i/count)*Math.PI*2
+    });
+}
+
+let move = 0;
+
+function animate(){
+    move += 0.005; // السرعة
+
+    words.forEach(w=>{
+        let t = w.t + move;
+        let p = heart(t);
+
+        let x = p.x * 14;
+        let y = -p.y * 14;
+
+        // بدون دوران 🔥
+        w.el.style.transform = `
+            translate(-50%, -50%)
+            translate(${x}px, ${y}px)
+        `;
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html>
